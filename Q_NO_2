@@ -1,0 +1,52 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+def print_left_view(root):
+    if root is None:
+        return
+
+    queue = [(root, 1)]  # Queue to store nodes along with their levels
+    level_map = {}  # Dictionary to store the leftmost node at each level
+
+    while queue:
+        node, level = queue.pop(0)
+
+        if level not in level_map:
+            level_map[level] = node.data
+
+        # Add the left and right child of the current node to the queue
+        if node.left:
+            queue.append((node.left, level + 1))
+        if node.right:
+            queue.append((node.right, level + 1))
+
+    # Print the leftmost nodes at each level
+    for level in sorted(level_map.keys()):
+        print(level_map[level], end=" ")
+
+
+# Testing the function
+root = Node(4)
+root.left = Node(5)
+root.right = Node(2)
+root.right.left = Node(3)
+root.right.right = Node(1)
+root.right.left.left = Node(6)
+root.right.left.right = Node(7)
+
+print("Left View:", end=" ")
+print_left_view(root)  # Output: 4 5 3 6
+
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.right = Node(4)
+root.left.right.right = Node(5)
+root.left.right.right.right = Node(6)
+
+print("Left View:", end=" ")
+print_left_view(root)  # Output: 1 2 4 5 6
