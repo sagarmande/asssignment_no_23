@@ -1,0 +1,36 @@
+def calculate_tree_depth(preorder):
+    if not preorder:
+        return 0
+
+    # Recursive case:
+    # The first character in the preorder traversal is always the root
+    root = preorder[0]
+
+    # If the root is a leaf node, the depth is 0
+    if root == 'l':
+        return 0
+
+    # If the root is an internal node, we need to calculate the depth of its children
+    left_subtree = preorder[1:]
+    right_subtree = ""
+
+    # Find the index where the right subtree starts
+    for i in range(1, len(preorder)):
+        if preorder[i] == 'n':
+            right_subtree = preorder[i:]
+            break
+
+    # Recursively calculate the depth of the left and right subtrees
+    left_depth = calculate_tree_depth(left_subtree)
+    right_depth = calculate_tree_depth(right_subtree)
+
+    # The depth of the tree is the maximum depth among the left and right subtrees, plus 1 for the root
+    return max(left_depth, right_depth) + 1
+
+
+# Testing the function
+preorder1 = "nlnll"
+print("Depth of tree:", calculate_tree_depth(preorder1))  # Output: 2
+
+preorder2 = "nlnnlll"
+print("Depth of tree:", calculate_tree_depth(preorder2))  # Output: 3
