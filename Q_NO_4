@@ -1,0 +1,64 @@
+from collections import deque
+
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+        self.hd = 0  # Horizontal distance
+
+
+def print_bottom_view(root):
+    if root is None:
+        return
+
+    queue = deque()
+    node_map = {}
+
+    queue.append(root)
+
+    while queue:
+        node = queue.popleft()
+
+        hd = node.hd
+        node_map[hd] = node.data
+
+        if node.left:
+            node.left.hd = hd - 1
+            queue.append(node.left)
+
+        if node.right:
+            node.right.hd = hd + 1
+            queue.append(node.right)
+
+    # Print the nodes from the dictionary in the order of their horizontal distances
+    for hd in sorted(node_map.keys()):
+        print(node_map[hd], end=" ")
+
+
+# Testing the function
+root = Node(20)
+root.left = Node(8)
+root.right = Node(22)
+root.left.left = Node(5)
+root.left.right = Node(3)
+root.right.right = Node(25)
+root.left.right.left = Node(10)
+root.left.right.right = Node(14)
+
+print("Bottom View:", end=" ")
+print_bottom_view(root)  # Output: 5 10 3 14 25
+
+root = Node(20)
+root.left = Node(8)
+root.right = Node(22)
+root.left.left = Node(5)
+root.left.right = Node(3)
+root.right.left = Node(4)
+root.right.right = Node(25)
+root.left.right.left = Node(10)
+root.left.right.right = Node(14)
+
+print("Bottom View:", end=" ")
+print_bottom_view(root)  # Output: 5 10 4 14 25
