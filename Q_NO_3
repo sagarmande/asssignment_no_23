@@ -1,0 +1,50 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+def print_right_view(root):
+    if root is None:
+        return
+
+    queue = [(root, 1)]  # Queue to store nodes along with their levels
+    level_map = {}  # Dictionary to store the rightmost node at each level
+
+    while queue:
+        node, level = queue.pop(0)
+
+        # Update the rightmost node at the current level
+        level_map[level] = node.data
+
+        # Add the left and right child of the current node to the queue
+        if node.left:
+            queue.append((node.left, level + 1))
+        if node.right:
+            queue.append((node.right, level + 1))
+
+    # Print the rightmost nodes at each level
+    for level in sorted(level_map.keys()):
+        print(level_map[level], end=" ")
+
+
+# Testing the function
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+root.right.left = Node(6)
+root.right.right = Node(7)
+root.right.right.right = Node(8)
+
+print("Right View:", end=" ")
+print_right_view(root)  # Output: 1 3 7 8
+
+root = Node(1)
+root.left = Node(8)
+root.left.left = Node(7)
+
+print("Right View:", end=" ")
+print_right_view(root)  # Output: 1 8 7
